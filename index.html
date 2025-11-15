@@ -1,97 +1,300 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apology Page</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Play: X-O & 4-in-a-row — Human vs Bot</title>
   <style>
-    body {
-      font-family: "Poppins", sans-serif;
-      background-color: #FFC0CB;
-      color: #000000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      text-align: center;
-      overflow: hidden;
-      position: relative;
-    }
-    h1 {
-      color: #ff6b6b;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 1.1rem;
-      max-width: 500px;
-    }
-    button {
-      background-color: #238636;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      margin-top: 20px;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background-color: #2ea043;
-    }
-
-    /* Lily flower style */
-    .flower {
-      position: absolute;
-      font-size: 2rem;
-      animation: fall linear forwards;
-      pointer-events: none;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-10%) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#60a5fa;--muted:#94a3b8;--glass: rgba(255,255,255,0.03)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,system-ui,Arial;background: linear-gradient(180deg, #ffb6c9 0%, #ff8ab3 100%);color: #000000;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .app{width:100%;max-width:980px}
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    .games-list{display:flex;gap:12px}
+    .btn{background:var(--glass);border:1px solid rgba(255,255,255,0.04);padding:10px 14px;border-radius:10px;color:var(--accent);cursor:pointer}
+    .container{display:grid;grid-template-columns:1fr 360px;gap:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .board{display:grid;gap:8px}
+    /* TicTacToe */
+    .ttt .board{grid-template-columns:repeat(3,1fr);width:100%;max-width:420px}
+    .cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:44px;background:rgba(255,255,255,0.02);border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.02)}
+    .cell.disabled{cursor:default;opacity:0.8}
+    /* Connect Four */
+    .c4 .board{grid-template-columns:repeat(7,44px);grid-auto-rows:44px;background:linear-gradient(0deg,#04243333,#04243366);padding:8px;border-radius:8px}
+    .slot{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center}
+    .slot.red{background:radial-gradient(circle at 30% 30%, rgba(255,80,80,0.95), rgba(180,20,20,0.95));}
+    .slot.yellow{background:radial-gradient(circle at 30% 30%, rgba(250,220,90,0.95), rgba(200,140,20,0.95));}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    footer{margin-top:14px;text-align:center;color:var(--muted)}
+    .right-column{display:flex;flex-direction:column;gap:12px}
+    .status{font-size:14px;color:var(--muted)}
+    .next-btn{margin-top:8px}
+    .quote{font-style:italic;padding:18px;border-radius:10px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03)}
+    @media (max-width:900px){.container{grid-template-columns:1fr}.right-column{order:2}}
   </style>
+<style>
+/* Rosy pastel cards */
+.game-card { background: #ffe1ec !important; border: 2px solid #ffb6c9 !important; box-shadow: 0 4px 12px rgba(255,150,180,0.4); }
+
+/* Floating heart animation */
+@keyframes floatHearts {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-120px) scale(1.4); opacity: 0; }
+}
+.heart { position: absolute; color: #000000; animation: floatHearts 3s linear infinite; font-size: 22px; pointer-events:none; }
+
+/* Splash intro */
+#splash {
+  position: fixed; inset: 0;
+  background: #ffd0e1;
+  display: flex; justify-content: center; align-items: center;
+  font-size: 2.2rem; font-family: 'Poppins', sans-serif;
+  z-index: 9999; animation: fadeOut 2.6s forwards ease-in-out;
+}
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+</style>
 </head>
 <body>
-  <h1>Really sorry.....!</h1>
-  <p>
-    I owe you an apology. While talking with you, I watched a reel by accident, and even played a game of chess.  
-    Totally didn’t mean to ignore our conversation! 😔
-  </p>
-  <p>
-    You deserve my full attention . Really sorry Khrch 💗 It won't happen again.  
-    You will always be my priority, forever. I know you’re angry at me —  
-    so for you, here are some lilies 🌸
-  </p>
-  <button onclick="dropFlowers()">Click for Lilies 🌸</button>
-  <h1> I Truly Love you ........... And it is forever my lady.</h1>
+<div id="splash">For my love ❤️</div>
+<script>
+// Heart spawn animation
+setInterval(() => {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.innerHTML = '❤️';
+  heart.style.left = Math.random()*90 + '%';
+  heart.style.bottom = '0px';
+  document.body.appendChild(heart);
+  setTimeout(()=> heart.remove(), 3000);
+}, 800);
+</script>
+  <div class="app">
+    <header>
+      <h1>Play: X‑O (Tic‑Tac‑Toe) & 4‑in‑a‑row — Human vs Bot</h1>
+      <div class="games-list">
+        <button class="btn" id="choose-ttt">Tic‑Tac‑Toe</button>
+        <button class="btn" id="choose-c4">4‑in‑a‑row</button>
+        <button class="btn" id="choose-quote">Finish</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <main>
+        <!-- TicTacToe area -->
+        <section id="ttt" class="card ttt" style="display:none">
+          <h2>Tic‑Tac‑Toe</h2>
+          <div class="status" id="ttt-status">Your turn — you are X</div>
+          <div id="ttt-board" class="board" aria-label="tic tac toe board"></div>
+          <div class="controls">
+            <button class="btn" id="ttt-reset">Reset</button>
+            <button class="btn" id="ttt-ai-first">AI goes first</button>
+          </div>
+        </section>
+
+        <!-- Connect Four area -->
+        <section id="c4" class="card c4" style="display:none">
+          <h2>Connect Four (4‑in‑a‑row)</h2>
+          <div class="status" id="c4-status">Click a column to drop a piece — you are Red</div>
+          <div id="c4-board" class="board" role="grid" aria-label="connect four board"></div>
+          <div class="controls">
+            <button class="btn" id="c4-reset">Reset</button>
+            <button class="btn" id="c4-ai-first">AI goes first</button>
+          </div>
+        </section>
+
+        <!-- Quote / end page -->
+        <section id="quote" class="card" style="display:none">
+          <h2>Farewell</h2>
+          <div class="quote">I will play game like this with you whole life, rather than playing games on you. Because I love you really, I want to be with you for my whole life Really,....</div>
+        </section>
+      </main>
+
+      <aside class="right-column">
+        <div class="card">
+          <h3>How to play</h3>
+          <p class="status">Choose a game at the top. Play against a simple, responsive bot. Use "Next Game" to cycle games back‑to‑back.</p>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn" id="prev-game">Previous Game</button>
+            <button class="btn" id="next-game">Next Game</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Controls</h3>
+          <p class="status">Reset will restart the current game. "AI goes first" makes the bot move immediately.</p>
+        </div>
+      </aside>
+    </div>
+
+    <footer>Built with love.</footer>
+  </div>
 
   <script>
-    function dropFlowers() {
-      for (let i = 0; i < 15; i++) {
-        const flower = document.createElement('div');
-        flower.classList.add('flower');
-        flower.textContent = '🌸';
-        flower.style.left = Math.random() * 100 + 'vw';
-        flower.style.animationDuration = 3 + Math.random() * 3 + 's';
-        flower.style.fontSize = 1.5 + Math.random() * 1.5 + 'rem';
-        document.body.appendChild(flower);
+  // ---------- App navigation ----------
+  const sections = ['ttt','c4','quote'];
+  let currentIndex = 0;
+  function showSection(id){
+    document.querySelectorAll('main section').forEach(s=>s.style.display='none');
+    document.getElementById(id).style.display='block';
+  }
+  document.getElementById('choose-ttt').addEventListener('click', ()=>{ currentIndex=0; showSection('ttt'); });
+  document.getElementById('choose-c4').addEventListener('click', ()=>{ currentIndex=1; showSection('c4'); });
+  document.getElementById('choose-quote').addEventListener('click', ()=>{ currentIndex=2; showSection('quote'); });
+  document.getElementById('next-game').addEventListener('click', ()=>{ currentIndex=(currentIndex+1)%sections.length; showSection(sections[currentIndex]); });
+  document.getElementById('prev-game').addEventListener('click', ()=>{ currentIndex=(currentIndex-1+sections.length)%sections.length; showSection(sections[currentIndex]); });
 
-        setTimeout(() => {
-          flower.remove();
-        }, 6000);
+  // Start with TicTacToe
+  showSection('ttt');
+
+  // ---------- Tic-Tac-Toe (X-O) ----------
+  const tttBoardEl = document.getElementById('ttt-board');
+  const tttStatus = document.getElementById('ttt-status');
+  let tttBoard = Array(9).fill(null); // 'X' or 'O'
+  let tttTurn = 'X'; // human is X
+  let tttGameOver = false;
+  const tttWinLines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+  function renderTTT(){
+    tttBoardEl.innerHTML='';
+    tttBoard.forEach((cell,i)=>{
+      const d = document.createElement('div'); d.className='cell'+(cell? ' disabled':''); d.textContent = cell||''; d.addEventListener('click', ()=>tttClick(i));
+      tttBoardEl.appendChild(d);
+    });
+  }
+  function tttClick(i){
+    if(tttGameOver || tttBoard[i]) return;
+    tttBoard[i]=tttTurn;
+    afterTTTMove();
+  }
+  function afterTTTMove(){
+    renderTTT();
+    const winner = checkTTTWinner();
+    if(winner){ tttGameOver=true; tttStatus.textContent = (winner==='draw')? 'Draw!' : (winner+' wins!'); return; }
+    tttTurn = (tttTurn==='X')?'O':'X';
+    tttStatus.textContent = (tttTurn==='X')? 'Your turn — you are X' : 'Bot is thinking...';
+    if(tttTurn==='O') setTimeout(tttBotMove, 300);
+  }
+  function checkTTTWinner(){
+    for(const line of tttWinLines){ const [a,b,c]=line; if(tttBoard[a] && tttBoard[a]===tttBoard[b] && tttBoard[a]===tttBoard[c]) return tttBoard[a]; }
+    if(tttBoard.every(Boolean)) return 'draw';
+    return null;
+  }
+
+  // Simple perfect bot using minimax
+  function tttBotMove(){
+    const best = tttMinimax(tttBoard, 'O');
+    tttBoard[best.index] = 'O';
+    afterTTTMove();
+  }
+  function tttMinimax(board, player){
+    const avail = board.map((v,i)=>v?null:i).filter(i=>i!==null);
+    const winner = (()=>{
+      for(const line of tttWinLines){ const [a,b,c]=line; if(board[a] && board[a]===board[b] && board[a]===board[c]) return board[a]; }
+      if(avail.length===0) return 'draw';
+      return null;
+    })();
+    if(winner){
+      if(winner==='X') return {score:-10};
+      if(winner==='O') return {score:10};
+      return {score:0};
+    }
+    const moves = [];
+    for(const i of avail){
+      const b2 = board.slice(); b2[i]=player;
+      const result = tttMinimax(b2, player==='O'?'X':'O');
+      moves.push({index:i,score:result.score});
+    }
+    let bestMove;
+    if(player==='O'){
+      let bestScore=-Infinity; for(const m of moves) if(m.score>bestScore){bestScore=m.score;bestMove=m;}
+    } else {
+      let bestScore=Infinity; for(const m of moves) if(m.score<bestScore){bestScore=m.score;bestMove=m;}
+    }
+    return bestMove;
+  }
+
+  document.getElementById('ttt-reset').addEventListener('click', ()=>{ tttBoard=Array(9).fill(null); tttTurn='X'; tttGameOver=false; tttStatus.textContent='Your turn — you are X'; renderTTT(); });
+  document.getElementById('ttt-ai-first').addEventListener('click', ()=>{ tttBoard=Array(9).fill(null); tttTurn='O'; tttGameOver=false; tttStatus.textContent='Bot is thinking...'; renderTTT(); setTimeout(tttBotMove,300); });
+  renderTTT();
+
+  // ---------- Connect Four (4-in-a-row) ----------
+  const C_ROWS = 6, C_COLS = 7;
+  const c4BoardEl = document.getElementById('c4-board');
+  const c4Status = document.getElementById('c4-status');
+  let c4Board = Array.from({length:C_ROWS},()=>Array(C_COLS).fill(null)); // null / 'R' / 'Y'
+  let c4Turn = 'R'; // human = R (red)
+  let c4GameOver = false;
+
+  function renderC4(){
+    c4BoardEl.innerHTML='';
+    for(let r=0;r<C_ROWS;r++){
+      for(let c=0;c<C_COLS;c++){
+        const slot = document.createElement('div'); slot.className='slot';
+        const val = c4Board[r][c]; if(val==='R') slot.classList.add('red'); if(val==='Y') slot.classList.add('yellow');
+        // clickable only on top row for column selection
+        if(r===0){ slot.style.cursor='pointer'; slot.addEventListener('click', ()=>c4Drop(c)); }
+        c4BoardEl.appendChild(slot);
       }
     }
+  }
+  function c4Drop(col){
+    if(c4GameOver || c4Turn!=='R') return;
+    for(let r=C_ROWS-1;r>=0;r--){ if(!c4Board[r][col]){ c4Board[r][col]=c4Turn; break; } }
+    afterC4Move();
+  }
+  function afterC4Move(){
+    renderC4();
+    const winner = checkC4Winner();
+    if(winner){ c4GameOver=true; c4Status.textContent = (winner==='draw')? 'Draw!' : (winner==='R' ? 'You (Red) win!' : 'Bot (Yellow) wins!'); return; }
+    c4Turn = (c4Turn==='R')?'Y':'R';
+    c4Status.textContent = (c4Turn==='R')? 'Your turn — you are Red' : 'Bot is thinking...';
+    if(c4Turn==='Y') setTimeout(c4BotMove, 400);
+  }
+
+  // Check winner (horizontal, vertical, diag)
+  function checkC4Winner(){
+    // helper
+    function inBounds(r,c){ return r>=0 && r<C_ROWS && c>=0 && c<C_COLS; }
+    const directions = [[0,1],[1,0],[1,1],[1,-1]];
+    for(let r=0;r<C_ROWS;r++) for(let c=0;c<C_COLS;c++){
+      const p = c4Board[r][c]; if(!p) continue;
+      for(const [dr,dc] of directions){
+        let cnt=0; for(let k=0;k<4;k++){ const rr=r+dr*k, cc=c+dc*k; if(inBounds(rr,cc) && c4Board[rr][cc]===p) cnt++; }
+        if(cnt===4) return p;
+      }
+    }
+    // draw?
+    if(c4Board.every(row=>row.every(Boolean))) return 'draw';
+    return null;
+  }
+
+  // Simple Connect4 bot: win/block, else choose best column by heuristic
+  function c4BotMove(){
+    // 1) Win if possible
+    for(let col=0;col<C_COLS;col++){
+      const row = getDropRow(col); if(row===-1) continue;
+      c4Board[row][col] = 'Y'; if(checkC4Winner()==='Y'){ renderC4(); afterC4Move(); return; } c4Board[row][col]=null;
+    }
+    // 2) Block opponent win
+    for(let col=0;col<C_COLS;col++){
+      const row = getDropRow(col); if(row===-1) continue;
+      c4Board[row][col] = 'R'; if(checkC4Winner()==='R'){ c4Board[row][col]='Y'; renderC4(); afterC4Move(); return; } c4Board[row][col]=null;
+    }
+    // 3) Prefer center columns
+    const order = [3,2,4,1,5,0,6];
+    for(const col of order){ const row = getDropRow(col); if(row!==-1){ c4Board[row][col]='Y'; renderC4(); afterC4Move(); return; } }
+  }
+  function getDropRow(col){ for(let r=C_ROWS-1;r>=0;r--){ if(!c4Board[r][col]) return r; } return -1; }
+
+  document.getElementById('c4-reset').addEventListener('click', ()=>{ c4Board = Array.from({length:C_ROWS},()=>Array(C_COLS).fill(null)); c4Turn='R'; c4GameOver=false; c4Status.textContent='Click a column to drop a piece — you are Red'; renderC4(); });
+  document.getElementById('c4-ai-first').addEventListener('click', ()=>{ c4Board = Array.from({length:C_ROWS},()=>Array(C_COLS).fill(null)); c4Turn='Y'; c4GameOver=false; c4Status.textContent='Bot is thinking...'; renderC4(); setTimeout(c4BotMove,400); });
+  renderC4();
+
   </script>
 </body>
 </html>
